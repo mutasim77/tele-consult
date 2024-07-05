@@ -9,7 +9,10 @@ type ThemeContextType = {
     setTheme: (theme: Theme) => void
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextType>({
+    theme: 'dark',
+    setTheme: () => { }
+});
 
 export const useTheme = () => useContext(ThemeContext);
 
