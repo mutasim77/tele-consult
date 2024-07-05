@@ -1,14 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useSocket } from '@/providers/SocketProvider';
 
 export default function OperatorPage() {
     const { socket, isConnected } = useSocket();
     const [queues, setQueues] = useState<Record<string, string[]>>({});
     const router = useRouter();
-    const operatorName = useSearchParams()?.get('name');
 
     useEffect(() => {
         if (socket && isConnected) {
@@ -30,7 +29,7 @@ export default function OperatorPage() {
     return (
         <div className="space-y-6">
             <h1 className="text-3xl md:text-4xl font-bold mb-2 text-center bg-gradient-to-r from-light-primary to-light-accent dark:from-dark-primary dark:to-dark-accent text-transparent bg-clip-text">
-                Welcome back, {operatorName}!
+                Welcome back, John!
             </h1>
             <p className="text-center text-md text-light-secondary dark:text-dark-secondary mb-4">
                 Users are waiting for you. Pick a conversation to start.

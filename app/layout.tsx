@@ -17,7 +17,6 @@ export const metadata: Metadata = {
   openGraph: {
     title: "TeleConsult - Connect with Telecom Experts Instantly",
     description: "Need help with your mobile service? Chat with telecom operators in real-time. Secure, fast, and efficient support at your fingertips.",
-
     images: [
       {
         url: "https://www.mutasim.top/og?title=TeleConsult%20|%20Real-time%20Online%20Consultation%20for%20Telecom%20Operators",
@@ -29,13 +28,10 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
-  robots: "index, follow",
   authors: {
     name: "Mutasim",
     url: "https://www.mutasim.top/"
   },
-  viewport: "width=device-width, initial-scale=1",
-  themeColor: "#fbbf24",
 };
 
 export default function RootLayout({
