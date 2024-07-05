@@ -17,6 +17,7 @@ TeleConsult tackles common telecom nightmares:
 - 📱 Fully responsive design
 - 🔄 Smart queuing system for operator availability
 - 👥 Dedicated operator interface for efficient support
+- 🌓 Dark mode support
 
 ## 🛠️ Tech Stack
 - **🧠 TypeScript** - For type-safe code
@@ -40,7 +41,7 @@ TeleConsult tackles common telecom nightmares:
    cd tele-consult
    pnpm install
    ```
-3. Set up environment variables (check `.env`)
+3. Set up environment variables (check `.env.example`)
 > [!IMPORTANT] 
 > The `.env` file in this repository contains environment variables and secret keys that are currently present for testing and demonstration purposes only. These keys are temporary and do not provide access to any sensitive or production systems.
 
