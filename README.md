@@ -49,8 +49,25 @@ TeleConsult tackles common telecom nightmares:
    ```
    pnpm dev
    ```
+5. Open `http://localhost:3000` in your browser 🎉
+
+> [!IMPORTANT]
+> While Next.js is lightning-fast in _production_, you might notice slower performance in _development_ mode. For a more accurate representation of the app's speed and to test WebSocket functionality, I strongly recommend running the production build:
+> 1. Build the project:
+>   ```
+>   pnpm build
+>   ```
+> 2. Start the production server:
+>   ```
+>   pnpm start
+>   ```
+> This method will give you a much snappier experience, closer to what end-users will see. It's especially useful for testing _real-time_ features and overall performance. ⚡
+
 ## 🌐 Deployment
 TeleConsult is deployed on Vercel. Check it out here: [TeleConsult Live](https://tele-consult.vercel.app/)
+
+> [!IMPORTANT]
+> The deployment is currently working well, but there's an ongoing issue with WebSocket (ws) support due to compatibility between my Next.js version and Vercel's infrastructure. I'll fix it ASAP.
 
 ## 📸 Preview
 ###  /
