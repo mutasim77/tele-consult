@@ -10,18 +10,20 @@ const config: Config = {
     extend: {
       colors: {
         light: {
-          background: '#f8fafc',
+          background: '#F2F2F2',
           text: '#1e293b',
           primary: '#3b82f6',
           secondary: '#64748b',
           accent: '#fbbf24',
+          lighterBackground: '#EEEEEE'
         },
         dark: {
-          background: '#1c1c1c',
+          background: '#0D0D0D',
           text: '#e2e8f0',
           primary: '#60a5fa',
           secondary: '#94a3b8',
           accent: '#fcd34d',
+          grayDarkest: '#171717'
         },
         button: {
           primary: '#fbbf24',
