@@ -51,3 +51,16 @@ export const serviceData: { [key: string]: IServiceData } = {
         ],
     },
 }
+
+
+type User = {
+    phoneNumber: string;
+    name: string;
+}
+
+export const mockData: User[] = [
+    { phoneNumber: "992000087773", name: "Mutasim" },
+    { phoneNumber: "992999999999", name: "Aisha" },
+    { phoneNumber: "992000000000", name: "Kamil" },
+    { phoneNumber: "992777777777", name: "Layla" },
+]
