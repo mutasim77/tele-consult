@@ -35,7 +35,7 @@ export default function LoginPage() {
             setError('Please enter the OTP code');
             return;
         }
-
+        /* 
         const phone = `+992${phoneNumber.split(' ').join('')}`
         const { error } = await supabase.auth.verifyOtp({
             phone,
@@ -53,7 +53,13 @@ export default function LoginPage() {
             router.push(`/operator?name=${user.name}`);
             return;
         }
+        */
 
+        // bypass for testing purpose 
+        if (otpCode !== '777777') {
+            setError('Token has expired or is invalid');
+            return
+        }
         router.push('/help');
     }
 
