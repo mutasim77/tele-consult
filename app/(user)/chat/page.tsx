@@ -1,21 +1,46 @@
 'use client';
-import { UserChat } from '@/components';
-import { useState } from 'react';
 
-export default function ChatPage() {
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabaseClient';
+
+export default function UserPage() {
     const [language, setLanguage] = useState('');
     const [username, setUsername] = useState('');
-    const [isChatStarted, setIsChatStarted] = useState(false);
+    const router = useRouter();
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (username && language) {
-            setIsChatStarted(true);
-        }
-    }
+            const { data: userData, error: userError } = await supabase
+                .from('users')
+                .insert({ name: username, language })
+                .select()
+                .single();
 
-    if (isChatStarted) {
-        return <UserChat language={language} username={username} />;
+            if (userError) {
+                console.error('Error creating user:', userError);
+                return;
+            }
+
+            //? Create a new chat with the placeholder operator
+            const { data: chatData, error: chatError } = await supabase
+                .from('chats')
+                .insert({
+                    user_id: userData.id,
+                    operator_id: '00000000-0000-0000-0000-000000000000',
+                    status: 'waiting'
+                })
+                .select()
+                .single();
+
+            if (chatError) {
+                console.error('Error creating chat:', chatError);
+                return;
+            }
+
+            router.push(`/chat/${chatData.id}`);
+        }
     }
 
     return (
