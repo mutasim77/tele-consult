@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { formatTime } from '@/lib/utils';
+import { formatTime, setOperatorStatus } from '@/lib/utils';
 import { supabase } from '@/lib/supabaseClient';
 import { ChatInput, ChatMessages, ChatStatus } from '@/components';
 import { useChat, useChatId, useChatStatus, useOperatorAuth, useScrollToBottom } from '@/hooks';
+import { LeaveChat } from '@/components/chat/LeaveChat';
 
 export default function OperatorChat() {
     const [user, setUser] = useState<any>(null);
@@ -25,6 +26,11 @@ export default function OperatorChat() {
     useEffect(() => {
         if (chatId && operatorInfo) {
             fetchUserDetails();
+            setOperatorStatus(operatorInfo.id, true);
+        }
+
+        return () => {
+            setOperatorStatus(operatorInfo?.id!, false);
         }
         // eslint-disable-next-line 
     }, [chatId, operatorInfo]);
@@ -67,6 +73,7 @@ export default function OperatorChat() {
                 isDisabled={false}
                 isUploading={isUploading}
             />
+            <LeaveChat userId={operatorInfo.id} userType="operator" />
         </div>
     )
 }
