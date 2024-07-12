@@ -2,7 +2,13 @@
 const nextConfig = {
     reactStrictMode: true,
     images: {
-        domains: ['ucbtidlhyfpiknjfrndg.supabase.co'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'ucbtidlhyfpiknjfrndg.supabase.co',
+                pathname: '**',
+            },
+        ],
     },
     webpack: (config, { isServer }) => {
         if (!isServer) {
