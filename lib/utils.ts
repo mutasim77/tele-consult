@@ -50,3 +50,29 @@ export async function fetchOperator(phoneNumber: string): Promise<{
         return { message: `Error fetching user:' ${error}` };
     }
 }
+
+/** 
+ * @description
+ * Converts a timestamp string (in GMT+0) to a formatted time string in the local timezone (GMT+5).
+ * 
+ * @param timestamp: string 
+ * A timestamp string in the format 'YYYY-MM-DDTHH:MM:SS.ssssss' (e.g., '2024-07-12T12:57:00.967612').
+ * 
+ * @returns string
+ * A formatted time string in the local timezone (GMT+5) in either 12-hour or 24-hour format 
+ * based on the 'hour12' option.
+ */
+export const formatTime = (timestamp: string) => {
+    const [datePart, timePart] = timestamp.split('T');
+    const [year, month, day] = datePart.split('-');
+    const [time] = timePart.split('.');
+    const [hours, minutes] = time.split(':');
+
+    const date = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes)));
+
+    return date.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+    })
+}
