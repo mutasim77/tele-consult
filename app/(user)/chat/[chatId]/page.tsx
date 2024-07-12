@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabaseClient';
 import { formatTime } from '@/lib/utils';
 import { useChat, useChatId, useChatStatus, useScrollToBottom } from '@/hooks';
 import { ChatInput, ChatMessages, ChatStatus } from '@/components';
+import { LeaveChat } from '@/components/chat/LeaveChat';
 
 export default function UserChat() {
     const [operatorId, setOperatorId] = useState<string | null>(null);
@@ -40,7 +41,9 @@ export default function UserChat() {
         } else if (data) {
             setUserId(data.user_id);
             setOperatorId(data.operator_id);
-            setOperatorName(data.operators?.username);
+            if (data.operator_id !== '00000000-0000-0000-0000-000000000000') {
+                setOperatorName(data.operators?.username);
+            }
         }
     }
 
@@ -70,6 +73,7 @@ export default function UserChat() {
                 isDisabled={!isOperatorOnline}
                 isUploading={isUploading}
             />
+            <LeaveChat userId={userId} userType="client" />
         </div>
     )
 }

@@ -14,7 +14,7 @@ export default function UserPage() {
         if (username && language) {
             const { data: userData, error: userError } = await supabase
                 .from('users')
-                .insert({ name: username, language })
+                .insert({ name: username, language, is_online: true })
                 .select()
                 .single();
 
