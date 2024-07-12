@@ -20,6 +20,7 @@ export default function Home() {
           layout="fill"
           objectFit="cover"
           className="rounded-full shadow-lg border border-white/10"
+          unoptimized
         />
       </div>
 
