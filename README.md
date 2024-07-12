@@ -18,13 +18,15 @@ TeleConsult tackles common telecom nightmares:
 - 🔄 Smart queuing system for operator availability
 - 👥 Dedicated operator interface for efficient support
 - 🌓 Dark mode support
+- 📁 Image sharing in chats
+- 🔔 Real-time online/offline status updates
+- 🌐 Offline mode detection and alert
 
 ## 🛠️ Tech Stack
 - **🧠 TypeScript** - For type-safe code
 - **⚛️ Next.js** - React framework for building the UI
-- **🔌 WebSockets** - Real-time bidirectional communication
 - **💅 Tailwind CSS** - Utility-first CSS framework
-- **🗃️ Supabase** - Backend as a Service for data storage and authentication
+- **🔌 Supabase** - Backend as a Service for real-time features, data storage, and authentication
 
 ## 🏃‍♂️ Getting Started
 #### Prerequisites
@@ -42,14 +44,15 @@ TeleConsult tackles common telecom nightmares:
    pnpm install
    ```
 3. Set up environment variables (check `.env.example`)
-> [!IMPORTANT] 
-> The `.env` file in this repository contains environment variables and secret keys that are currently present for testing and demonstration purposes only. These keys are temporary and do not provide access to any sensitive or production systems.
-
-4. Run the development server:
+    ```
+    NEXT_PUBLIC_SUPABASE_URL=
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=
+   ```
+5. Run the development server:
    ```
    pnpm dev
    ```
-5. Open `http://localhost:3000` in your browser 🎉
+6. Open `http://localhost:3000` in your browser 🎉
 
 > [!IMPORTANT]
 > While Next.js is lightning-fast in _production_, you might notice slower performance in _development_ mode. For a more accurate representation of the app's speed and to test WebSocket functionality, I strongly recommend running the production build:
@@ -67,7 +70,8 @@ TeleConsult tackles common telecom nightmares:
 TeleConsult is deployed on Vercel. Check it out here: [TeleConsult Live](https://tele-consult.vercel.app/)
 
 > [!IMPORTANT]
-> The deployment is currently working well, but there's an ongoing issue with WebSocket (ws) support due to compatibility between my Next.js version and Vercel's infrastructure. I'll fix it ASAP.
+> The deployment is currently working well, but ~there's an ongoing issue with WebSocket (ws) support due to compatibility between my Next.js version and Vercel's infrastructure~. I'll fix it ASAP.
+> ✅ FIXED!
 
 ## 📸 Preview
 ###  /
@@ -93,15 +97,11 @@ TeleConsult is deployed on Vercel. Check it out here: [TeleConsult Live](https:/
 
 ## 🔮 Future Plans (TODO)
 - 🛡️ Protect routes using middleware
-- 📧 Add Gmail integration for authentication
-- 👤 Display user's name beside the operator
+- 📧 Add additional authentication methods
 - ⏱️ Implement correct OTP timer
 - 🌍 Add Language Translation using AI
 - 🧠 Enhance AI model for answering basic questions
-- 🔙 Move backend to Hono.js or Express.js
-- 📞 Buy Twilio number for testing with other numbers
 - 🎨 Add custom 404 and 500 pages
-- 📊 Implement analytics dashboard
 - 🔔 Add push notifications
 
 ## 🤝 Contributing
