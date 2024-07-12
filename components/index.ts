@@ -1,13 +1,9 @@
-import ExpirationTimer from './ExpirationTimer';
-import ThemeSwitcher from './ThemeSwitcher';
-import UserChat from './UserChat';
-import Footer from './Footer';
-import Header from './Header';
-
-export {
-    ExpirationTimer,
-    ThemeSwitcher,
-    UserChat,
-    Footer,
-    Header
-}
+export { default as ExpirationTimer } from './ui/ExpirationTimer';
+export { default as ThemeSwitcher } from './ui/ThemeSwitcher';
+export { default as Footer } from './layout/Footer';
+export { default as Header } from './layout/Header';
+export { default as OnlineStatus } from './ui/OnlineStatus';
+export { default as ChatMessages } from './chat/ChatMessages';
+export { default as ChatInput } from './chat/ChatInput';
+export { default as ChatStatus } from './chat/ChatStatus';
+export { default as ChatTable } from './chat/ChatTable'

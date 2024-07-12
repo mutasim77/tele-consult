@@ -1,5 +1,5 @@
 import { blockStyle } from "@/lib/styles";
-import ThemeSwitcher from "./ThemeSwitcher";
+import ThemeSwitcher from "../ui/ThemeSwitcher";
 
 export default function Header() {
     return (
