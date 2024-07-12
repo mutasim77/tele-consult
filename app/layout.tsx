@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import "./globals.css";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import { WebSocketProvider } from "@/providers/SocketProvider";
-import { Footer, Header } from "@/components";
+import { Footer, Header, OnlineStatus } from "@/components";
+import "./globals.css";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -43,7 +42,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={`${poppins.className} bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text  w-full h-full  min-h-screen flex flex-col justify-center items-center max-w-3xl m-auto px-4 xs:px-10`}>
         <ThemeProvider>
-          <WebSocketProvider>
+          <OnlineStatus>
             <Header />
             <main className="h-full w-full justify-center items-center m-auto py-4 xs:py-10">
               <div className="bg-light-white dark:bg-dark-grayDarkest shadow-lg p-6 max-w-[900px] mx-auto border border-white/10 rounded-3xl">
@@ -51,7 +50,7 @@ export default function RootLayout({
               </div>
             </main>
             <Footer />
-          </WebSocketProvider>
+          </OnlineStatus>
         </ThemeProvider>
       </body>
     </html>
