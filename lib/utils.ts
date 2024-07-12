@@ -1,3 +1,5 @@
+import { supabase } from "./supabaseClient";
+
 /** 
  * @description
  * The International dialing format for Tajikistan with area code +992 and up to 9 digits: 
@@ -75,4 +77,14 @@ export const formatTime = (timestamp: string) => {
         minute: '2-digit',
         hour12: true,
     })
+}
+
+export const setOperatorStatus = async (operatorId: string, status: boolean) => {
+    const { error } = await supabase
+        .from('operators')
+        .update({ is_online: status })
+        .eq('id', operatorId);
+    if (error) {
+        console.error('Error setting operator online:', error);
+    }
 }

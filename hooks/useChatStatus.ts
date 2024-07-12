@@ -6,12 +6,25 @@ export function useChatStatus(userId: string, userType: 'client' | 'operator') {
 
     useEffect(() => {
         if (!userId) return;
+
         const table = userType === 'client' ? 'users' : 'operators';
 
-        updateOnlineStatus(true);
+        const fetchCurrentStatus = async () => {
+            const { data, error } = await supabase
+                .from(table)
+                .select('is_online')
+                .eq('id', userId)
+                .single();
+            if (error) {
+                console.error('Error fetching current status:', error);
+            } else {
+                setIsOnline(data.is_online);
+            }
+        };
 
-        const subscription = supabase
-            .channel(`${userType}:${userId}`)
+        fetchCurrentStatus();
+
+        const subscription = supabase.channel(`${table}:${userId}`)
             .on('postgres_changes', {
                 event: 'UPDATE',
                 schema: 'public',
@@ -19,30 +32,13 @@ export function useChatStatus(userId: string, userType: 'client' | 'operator') {
                 filter: `id=eq.${userId}`
             }, (payload) => {
                 setIsOnline(payload.new.is_online);
-            })
-            .subscribe();
-
-        updateOnlineStatus(true);
+            }).subscribe();
 
         return () => {
             subscription.unsubscribe();
-            updateOnlineStatus(false);
         }
 
-        // eslint-disable-next-line
     }, [userId, userType]);
-
-    const updateOnlineStatus = async (status: boolean) => {
-        const table = userType === 'client' ? 'users' : 'operators';
-        const { error } = await supabase
-            .from(table)
-            .update({ is_online: status })
-            .eq('id', userId);
-
-        if (error) {
-            console.error(`Error updating ${userType} status:`, error);
-        }
-    }
 
     return isOnline;
 }
