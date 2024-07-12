@@ -2,63 +2,87 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSocket } from '@/providers/SocketProvider';
+import { supabase } from '@/lib/supabaseClient';
+import { ChatTable } from '@/components';
+import { useChatSubscription, useOperatorAuth } from '@/hooks';
 
 export default function OperatorPage() {
-    const { socket, isConnected } = useSocket();
-    const [queues, setQueues] = useState<Record<string, string[]>>({});
+    const [waitingChats, setWaitingChats] = useState<any[]>([]);
+    const { operatorInfo } = useOperatorAuth();
     const router = useRouter();
 
+    useChatSubscription(fetchWaitingChats);
+
     useEffect(() => {
-        if (socket && isConnected) {
-            socket.emit('register', { role: 'operator' });
-
-            socket.on('queueUpdate', (updatedQueues: Record<string, string[]>) => {
-                setQueues(updatedQueues);
-            });
+        if (operatorInfo) {
+            fetchWaitingChats();
         }
-    }, [socket, isConnected]);
+    }, [operatorInfo]);
 
-    const acceptUser = (userId: string, language: string) => {
-        if (socket) {
-            socket.emit('acceptUser', { userId, language });
-            router.push(`/operator/${userId}`);
+    async function fetchWaitingChats() {
+        const { data, error } = await supabase
+            .from('chats')
+            .select(`
+                id,
+                users (id, name, language),
+                status,
+                created_at
+            `)
+            .eq('status', 'waiting')
+            .eq('operator_id', '00000000-0000-0000-0000-000000000000');
+
+        if (error) {
+            console.error('Error fetching waiting chats:', error);
+        } else {
+            setWaitingChats(data || []);
         }
     }
 
-    return (
-        <div className="space-y-6">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2 text-center bg-gradient-to-r from-light-primary to-light-accent dark:from-dark-primary dark:to-dark-accent text-transparent bg-clip-text">
-                Welcome back, John!
-            </h1>
-            <p className="text-center text-md text-light-secondary dark:text-dark-secondary mb-4">
-                Users are waiting for you. Pick a conversation to start.
-            </p>
+    const acceptChat = async (chatId: string) => {
+        if (!operatorInfo) {
+            console.error('No operator ID found. Please log in again.');
+            router.push('/operator/login');
+            return;
+        }
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {Object.entries(queues).map(([language, users]) => (
-                    <div key={language} className="bg-light-background dark:bg-dark-background rounded-lg p-6 shadow-lg border border-white/10">
-                        <h2 className="text-xl font-semibold text-light-text dark:text-dark-text mb-4">{language}</h2>
-                        {users.length > 0 ? (
-                            <ul className="space-y-2">
-                                {users.map((userId) => (
-                                    <li key={userId} className="flex justify-between items-center bg-light-secondary dark:bg-dark-secondary rounded p-3">
-                                        <span className="text-light-text dark:text-dark-text">{userId.slice(0, 3)}</span>
-                                        <button
-                                            onClick={() => acceptUser(userId, language)}
-                                            className="bg-button-primary hover:bg-button-hover text-button-text px-4 py-2 rounded-full transition-colors duration-200"
-                                        >
-                                            Accept
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p className="text-light-text dark:text-dark-text italic">No users waiting</p>
-                        )}
-                    </div>
-                ))}
-            </div>
+        const { error } = await supabase
+            .from('chats')
+            .update({
+                operator_id: operatorInfo.id,
+                status: 'active'
+            })
+            .eq('id', chatId);
+
+        if (error) {
+            console.error('Error accepting chat:', error);
+        } else {
+            router.push(`/operator/${chatId}`);
+        }
+    }
+
+
+    if (!operatorInfo) {
+        return <div>Loading...</div>;
+    }
+
+    return (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <header className="mb-10">
+                <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-light-primary to-light-accent dark:from-dark-primary dark:to-dark-accent text-transparent bg-clip-text">
+                    Welcome back, {operatorInfo.name}!
+                </h1>
+                <p className="mt-2 text-center text-lg text-light-secondary dark:text-dark-secondary">
+                    Users are waiting for you. Pick a conversation to start.
+                </p>
+            </header>
+            <ChatTable chats={waitingChats} acceptChat={acceptChat} />
+            {waitingChats.length === 0 && (
+                <div className="text-center py-10">
+                    <p className="text-xl text-light-secondary dark:text-dark-secondary">
+                        No waiting chats at the moment.
+                    </p>
+                </div>
+            )}
         </div>
     );
 }
