@@ -13,6 +13,15 @@ export default function ChatInput({
 ) {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            if (inputMessage.trim() && !isDisabled && !isUploading) {
+                sendMessage(inputMessage);
+            }
+        }
+    }
+
     return (
         <div className="border-t border-light-secondary dark:border-dark-secondary p-4">
             <div className="flex space-x-2">
@@ -35,6 +44,7 @@ export default function ChatInput({
                     type="text"
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
+                    onKeyDown={handleKeyPress}
                     disabled={isDisabled || isUploading}
                     placeholder={isUploading ? "Uploading file..." : "Type a message..."}
                     className="flex-1 border border-light-secondary dark:border-dark-secondary rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary text-light-text dark:text-dark-text bg-white dark:bg-dark-grayDarkest disabled:opacity-50 disabled:cursor-not-allowed"
